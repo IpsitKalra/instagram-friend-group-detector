@@ -5,7 +5,6 @@ import networkx as nx
 from networkx.algorithms.community import louvain_communities
 from tqdm import tqdm
 
-# ---------- 1. LOGIN (re-uses saved session.json if it exists) ----------
 USERNAME = input("Your Instagram @username: ")
 PASSWORD = input("Your Instagram password (hidden): ")
 
@@ -14,35 +13,34 @@ cl = Client()
 if sess_file.exists():
     cl.load_settings(str(sess_file))
 cl.login(USERNAME, PASSWORD)
-if not sess_file.exists():          # first time → save cookies for next run
+if not sess_file.exists():        
     sess_file.write_text(json.dumps(cl.get_settings()))
 
-# ---------- 2. GRAB FIRST-ORDER LIST (people you follow) ----------
-my_id = cl.user_id_from_username(USERNAME)
-friends = cl.user_following(my_id, amount=0)           # dict of Profile objects
 
-# ---------- 3. BUILD GRAPH ----------
+my_id = cl.user_id_from_username(USERNAME)
+friends = cl.user_following(my_id, amount=0)           
+
+
 G = nx.Graph()
 for p in friends.values():
     G.add_node(p.pk, username=p.username, name=p.full_name)
 
 print("\nScanning overlap among your followees (this can take 5-10 min)...")
 for a_id, a_prof in tqdm(friends.items()):
-    # hard-limit: check only the first 100 accounts each friend follows
+
     a_following = set(cl.user_following(a_id, amount=150).keys())
     for b_id in friends.keys():
         if a_id < b_id and b_id in a_following:
             G.add_edge(a_id, b_id, weight=1)
-    time.sleep(2 + 2*random.random())     # stay under Instagram rate limits
+    time.sleep(2 + 2*random.random())  
 
-# ---------- 4. COMMUNITY DETECTION ----------
+
 groups = louvain_communities(G, weight="weight", resolution=1.0)
 group_of = {uid: idx for idx, g in enumerate(groups) for uid in g}
 
-# ---------- 5. FIND BRIDGE ACCOUNTS ----------
+
 bridges = [uid for uid, score in nx.betweenness_centrality(G).items() if score > 0.03]
 
-# ---------- 6. WRITE A SIMPLE REPORT ----------
 out = pathlib.Path("bridges.txt").open("w", encoding="utf-8")
 for uid in bridges:
     p = friends[uid]
