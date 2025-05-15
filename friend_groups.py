@@ -47,6 +47,6 @@ for uid in bridges:
     connected_groups = sorted({group_of[n] for n in G[uid]})
     out.write(f"{p.username:25}  links groups {connected_groups}\n")
 out.close()
-print("\nDone!  Open 'bridges.txt' in TextEdit to see who links your friend groups.")
+print("\nDone!  Open 'bridges.txt' in TextEdit or any text editor to see who links your friend groups.")
 
 
