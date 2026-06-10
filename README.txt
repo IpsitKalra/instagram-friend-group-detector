@@ -2,7 +2,7 @@
 
 ## Overview
 
-Instagram Friend‑Group Detector is a command‑line (CLI) utility that analyses the social graph of a personal Instagram account. It clusters followees into cohesive communities using the Louvain method and identifies bridge accounts through betweenness centrality. The tool runs entirely on the client machine; no data is transmitted to external servers.
+Instagram Friend‑Group Detector is a command‑line (CLI) utility that analyses the social graph of a personal Instagram account. It clusters followees into cohesive communities using the Louvain method and identifies bridge accounts through betweenness centrality. The tool runs entirely on the client machine; NO data is transmitted to external servers.
 
 ## Features
 
