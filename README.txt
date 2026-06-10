@@ -7,7 +7,7 @@ Instagram Friend‑Group Detector is a command‑line (CLI) utility that analyse
 ## Features
 
 * Authenticates locally; two‑factor verification is required only on the first run.
-* Scrapes the first‑order follow graph and stores responses in a SQLite cache to minimise repeated API calls.
+* Scrapes the first‑order follow graph and stores responses in a SQLite cache to absolutely minimise repeated API calls.
 * Applies Louvain community detection to discover friend‑group “bubbles”.
 * Computes betweenness centrality to pinpoint users who connect multiple communities.
 * Produces:
